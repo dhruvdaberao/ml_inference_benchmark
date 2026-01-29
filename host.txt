@@ -28,12 +28,20 @@ This project is configured for deployment on Render, a unified cloud to build an
    - **Root Directory**: `.` (default)
    - **Runtime**: `Python 3`
    - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `python web/app.py` (or let it infer from Procfile)
+   - **Start Command**: `python web/app.py` (or check Procfile)
 
 4. **Deploy**
    - Click "Create Web Service".
    - Wait for the build logs to finish.
    - Click the generated URL to test.
+
+## Troubleshooting
+**"Nothing appears after clicking analysis"**
+If the page reloads but shows no results:
+1. Check the "Debug Block" at the bottom of the page (click "Raw Result Data").
+2. Go to Render Dashboard -> Logs.
+3. Look for "Received /analyze POST request".
+4. If you see "System Error", check the traceback.
 
 ## Interviews
 **Q: How do you deploy this?**
