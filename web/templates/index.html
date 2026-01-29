@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Execution Analyzer</title>
+    <style>
+        body { font-family: monospace; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f4f4; }
+        h1 { border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input[type="text"], input[type="number"], select { width: 100%; padding: 8px; border: 1px solid #ccc; font-family: monospace; }
+        button { background-color: #333; color: #fff; padding: 10px 20px; border: none; cursor: pointer; font-size: 16px; width: 100%; }
+        button:hover { background-color: #555; }
+        .report { background: #fff; border: 1px solid #ddd; padding: 20px; margin-top: 20px; white-space: pre-wrap; }
+        .error { color: red; background: #ffe6e6; padding: 10px; border: 1px solid red; margin-top: 20px; }
+        .section-header { font-weight: bold; margin-top: 20px; border-bottom: 1px dashed #999; display: block; }
+    </style>
+</head>
+<body>
+    <h1>ML Execution & Optimization Analyzer</h1>
+    <p>Simulate compiler-style memory optimizations (Static Buffering vs Eager Allocation).</p>
+
+    <form method="POST" action="/analyze">
+        <div class="form-group">
+            <label for="input_str">Input Vector (comma-separated floats):</label>
+            <input type="text" id="input_str" name="input_str" value="{{ last_input if last_input else '1.0, 0.5, -0.2' }}" required>
+            <small>Input will be tiled to fill 1024 input features.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="batch_size">Batch Size:</label>
+            <input type="number" id="batch_size" name="batch_size" value="{{ last_batch if last_batch else 32 }}" min="1" max="512" required>
+        </div>
+
+        <div class="form-group">
+            <label for="mode">Execution Mode:</label>
+            <select id="mode" name="mode">
+                <option value="both" {% if last_mode == 'both' %}selected{% endif %}>Compare (Baseline vs Optimized)</option>
+                <option value="baseline" {% if last_mode == 'baseline' %}selected{% endif %}>Baseline (Eager Exec)</option>
+                <option value="optimized" {% if last_mode == 'optimized' %}selected{% endif %}>Optimized (Static Buffertype)</option>
+            </select>
+        </div>
+
+        <button type="submit">Run Analysis</button>
+    </form>
+
+    {% if error %}
+        <div class="error">
+            <strong>Execution Failed:</strong> {{ error }}
+        </div>
+    {% endif %}
+
+    {% if results %}
+        <div class="report">
+ML ANALYSIS REPORT
+==================
+Timestamp: {{ results.timestamp }}
+Config: Batch={{ results.config.batch_size }}, Mode={{ results.mode }}
+
+{% if results.baseline %}
+BASELINE EXECUTION
+------------------
+Latency:  {{ "%.6f"|format(results.baseline.latency_sec) }} sec
+Peak Mem: {{ "%.2f"|format(results.baseline.peak_memory_kb) }} KB
+Output:   Mean={{ "%.4f"|format(results.baseline.output_summary.mean) }}
+{% endif %}
+
+{% if results.optimized %}
+OPTIMIZED EXECUTION
+-------------------
+Latency:  {{ "%.6f"|format(results.optimized.latency_sec) }} sec
+Peak Mem: {{ "%.2f"|format(results.optimized.peak_memory_kb) }} KB
+Output:   Mean={{ "%.4f"|format(results.optimized.output_summary.mean) }}
+{% endif %}
+
+{% if results.comparison %}
+COMPARISON SUMMARY
+------------------
+Speedup:           {{ "%.2f"|format(results.comparison.speedup_x) }}x
+Memory Reduction:  {{ "%.1f"|format(results.comparison.memory_savings_percent) }}%
+Correctness:       {{ "PASS" if results.comparison.correctness else "FAIL !!" }}
+Max Diff:          {{ "%.2e"|format(results.comparison.max_diff) }}
+{% endif %}
+        </div>
+    {% endif %}
+</body>
+</html>

@@ -1,4 +1,5 @@
 import numpy as np
+from typing import Dict
 
 class MLPModel:
     """
@@ -36,7 +37,7 @@ class MLPModel:
         self.W2 = self.rng.randn(hidden_dim, output_dim).astype(np.float32) * 0.01
         self.b2 = np.zeros(output_dim, dtype=np.float32)
         
-    def get_weights(self):
+    def get_weights(self) -> Dict[str, np.ndarray]:
         """Return a dictionary of weights for execution runners."""
         return {
             'W1': self.W1,

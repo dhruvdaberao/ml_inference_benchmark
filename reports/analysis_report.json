@@ -1,0 +1,32 @@
+{
+    "timestamp": "2026-01-30 01:14:30.049281",
+    "mode": "both",
+    "config": {
+        "batch_size": 32
+    },
+    "input_preview": "0.5,0.2...",
+    "baseline": {
+        "latency_sec": 0.004477754999970785,
+        "peak_memory_kb": 1313.421875,
+        "output_summary": {
+            "min": -0.20079348981380463,
+            "max": 0.1974669247865677,
+            "mean": 0.0007535841432400048
+        }
+    },
+    "optimized": {
+        "latency_sec": 0.0035227950000262355,
+        "peak_memory_kb": 33.34375,
+        "output_summary": {
+            "min": -0.20079348981380463,
+            "max": 0.1974669247865677,
+            "mean": 0.0007535841432400048
+        }
+    },
+    "comparison": {
+        "speedup_x": 1.2710802076014747,
+        "memory_savings_percent": 97.46130693917368,
+        "correctness": true,
+        "max_diff": 0.0
+    }
+}

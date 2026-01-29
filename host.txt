@@ -1,0 +1,40 @@
+# Hosting Guide for Render (Free Tier)
+
+This project is configured for deployment on Render, a unified cloud to build and run all your apps and websites.
+
+## Reasons for using Render
+- **Native Python/Flask Support**: Seamless deployment for WSGI apps.
+- **Free Tier**: "Web Services" free tier is sufficient for this demo.
+- **No Config**: Just a `requirements.txt` and `Procfile` are usually enough.
+
+## Limitations
+- **Cold Starts**: On the free tier, services spin down after inactivity. The first request might take 50+ seconds.
+- **RAM**: 512MB limit, which is plenty for our optimized engine (using <1MB), but tight for massive baselines.
+
+## Step-by-Step Deployment
+
+1. **Push Code to GitHub**
+   Ensure `requirements.txt` and `Procfile` are in the root.
+
+2. **Create New Web Service**
+   - Go to [dashboard.render.com](https://dashboard.render.com)
+   - Click "New +" -> "Web Service"
+   - Connect your GitHub repository.
+
+3. **Configure Service**
+   - **Name**: `ml-execution-analyzer`
+   - **Region**: Any (e.g., Ohio, Frankfurt)
+   - **Branch**: `main`
+   - **Root Directory**: `.` (default)
+   - **Runtime**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `python web/app.py` (or let it infer from Procfile)
+
+4. **Deploy**
+   - Click "Create Web Service".
+   - Wait for the build logs to finish.
+   - Click the generated URL to test.
+
+## Interviews
+**Q: How do you deploy this?**
+"I containerized the application logic with Flask and configured it for a PaaS like Render using a Procfile. It binds to the environment's PORT variable and exposes the analysis engine via a simple stateless HTTP API."
