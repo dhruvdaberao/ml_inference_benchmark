@@ -1,0 +1,35 @@
+============================================================
+AI Compiler Inference Benchmark (NumPy Only)
+============================================================
+Configuration:
+  Batch Size: 64
+  Input: 1024
+  Hidden: 4096
+  Output: 1024
+------------------------------------------------------------
+Generating fixed input data...
+Initializing weights...
+
+Verifying numerical correctness...
+  Max absolute difference: 0.00e+00
+  [OK] Outputs match.
+
+Starting Benchmarks (Warming up & Measuring)...
+Benchmarking Baseline Execution...
+Benchmarking Optimized Execution...
+
+============================================================
+BENCHMARK RESULTS SUMMARY
+============================================================
+Baseline:
+  Time: 0.008011 sec
+  Peak Memory: 2593.42 KB
+
+Optimized (Compiler-Style):
+  Time: 0.005748 sec
+  Peak Memory: 33.34 KB
+------------------------------------------------------------
+* Performance Win:
+  Speedup: 1.39x faster
+  Memory:  98.7% reduction in peak allocation
+============================================================
