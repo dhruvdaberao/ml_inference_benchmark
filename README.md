@@ -1,3 +1,4 @@
+
 # ML Execution & Optimization Analyzer
 
 **A professional tool for analyzing inference execution behavior and the impact of compiler-style optimizations.**
@@ -76,3 +77,12 @@ Compilers perform **Static Memory Planning**. They analyze the graph ahead of ti
 
 ---
 *Built for the Advanced Agentic Coding Interview.*
+
+
+## Contributing
+
+Contributions are welcome! If you find bugs or have suggestions for improvements, please open an issue or submit a pull request. Make sure your changes are well tested and documented.
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
